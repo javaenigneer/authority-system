@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>管理员添加</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="../../static/lib/layui-v2.5.4/css/layui.css" media="all">
+	<!-- 注意：如果你直接复制所有代码到本地，上述css路径需要改成你本地的 -->
+</head>
+<body class="childrenBody">
+
+<form class="layui-form" action="" lay-filter="example">
+
+	<!-- 管理员姓名 -->
+	<div class="layui-form-item">
+		<label class="layui-form-label">管理员名</label>
+		<div class="layui-input-block">
+			<input type="text" name="adminName" id="adminAddName" placeholder="请输入用户名"  autocomplete="off" class="layui-input">
+		</div>
+	</div>
+
+	
+	<!-- 管理员邮箱 -->
+	<div class="layui-form-item">
+		<label class="layui-form-label">管理员邮箱</label>
+		<div class="layui-input-block">
+			<input type="text" name="adminEmail" id="adminAddEmail" autocomplete="off" placeholder="请输入邮箱" class="layui-input">
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+		<div class="layui-input-block">
+			<button class="layui-btn" lay-submit="" lay-filter="addAdmin">立即提交</button>
+		</div>
+	</div>
+</form>
+<script src="../../static/lib/layui-v2.5.4/layui.js?v=1.0.4" charset="utf-8"></script>
+<script src="../../static/lib/jquery-3.4.1/jquery-3.4.1.min.js"></script>
+<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
+<script src="../../static/myJs/admin-add.js"></script>
+
+</body>
+</html>

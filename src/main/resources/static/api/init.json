@@ -1,0 +1,239 @@
+{
+  "clearInfo": {
+    "clearUrl": "api/clear.json"
+  },
+  "homeInfo": {
+    "title": "首页",
+    "icon": "fa fa-home",
+    "href": "/admin/welcome.html"
+  },
+  "logoInfo": {
+    "title": "FC权限管理系统",
+    "image": "../images/logo.png",
+    "href": ""
+  },
+  "menuInfo": {
+    "currency": {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "child": [
+        {
+          "title": "系统管理",
+          "href": "",
+          "icon": "fa fa-gears",
+          "target": "_self",
+          "child": [
+            {
+              "title": "系统设置",
+              "href": "/admin/setting.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "菜单管理",
+              "href": "/admin/menu.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "角色管理",
+              "href": "/admin/role.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "首页管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "首页图片管理",
+              "href": "/admin/picture.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "个人信息管理",
+              "href": "/admin/myself.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "网站用户",
+              "href": "/admin/user/list.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "系统用户",
+              "href": "/admin/list.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            },
+            {
+              "title": "重置用户密码",
+              "href": "page/form-step.html",
+              "icon": "",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "留言管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "留言列表",
+              "href": "/admin/contact.html",
+              "icon": "fa fa-list-alt",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "内容管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "文章管理",
+              "href": "/admin/article/list.html",
+              "icon": "",
+              "target": "_self"
+            },
+            {
+              "title": "评论列表",
+              "href": "/admin/comment/list.html",
+              "icon": "",
+              "target": "_self"
+            },
+            {
+              "title": "分类管理",
+              "href": "/admin/articleType/list.html",
+              "icon": "",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "异常页面",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "404页面",
+              "href": "/admin/error.html",
+              "icon": "fa fa-hourglass-end",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    },
+    "component": {
+      "title": "组件管理",
+      "icon": "fa fa-lemon-o",
+      "child": [
+        {
+          "title": "图标列表",
+          "href": "page/icon.html",
+          "icon": "fa fa-dot-circle-o",
+          "target": "_self"
+        },
+        {
+          "title": "图标选择",
+          "href": "page/icon-picker.html",
+          "icon": "fa fa-adn",
+          "target": "_self"
+        },
+        {
+          "title": "颜色选择",
+          "href": "page/color-select.html",
+          "icon": "fa fa-dashboard",
+          "target": "_self"
+        },
+        {
+          "title": "下拉选择",
+          "href": "page/table-select.html",
+          "icon": "fa fa-angle-double-down",
+          "target": "_self"
+        },
+        {
+          "title": "文件上传",
+          "href": "page/upload.html",
+          "icon": "fa fa-arrow-up",
+          "target": "_self"
+        },
+        {
+          "title": "富文本编辑器",
+          "href": "page/editor.html",
+          "icon": "fa fa-edit",
+          "target": "_self"
+        }
+      ]
+    },
+    "other": {
+      "title": "其它管理",
+      "icon": "fa fa-slideshare",
+      "child": [
+        {
+          "title": "多级菜单",
+          "href": "",
+          "icon": "fa fa-meetup",
+          "target": "",
+          "child": [
+            {
+              "title": "按钮1",
+              "href": "page/button.html",
+              "icon": "fa fa-calendar",
+              "target": "_self",
+              "child": [
+                {
+                  "title": "按钮2",
+                  "href": "page/button.html",
+                  "icon": "fa fa-snowflake-o",
+                  "target": "_self",
+                  "child": [
+                    {
+                      "title": "按钮3",
+                      "href": "page/button.html",
+                      "icon": "fa fa-snowflake-o",
+                      "target": "_self"
+                    },
+                    {
+                      "title": "表单4",
+                      "href": "page/form.html",
+                      "icon": "fa fa-calendar",
+                      "target": "_self"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "失效菜单",
+          "href": "page/error.html",
+          "icon": "fa fa-superpowers",
+          "target": "_self"
+        }
+      ]
+    }
+  }
+}
