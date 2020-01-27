@@ -1,10 +1,12 @@
 package com.feicheng.authority.system.service;
 
+import com.feicheng.authority.common.response.MessageResult;
 import com.feicheng.authority.common.response.ResponseResult;
 import com.feicheng.authority.system.entity.Admin;
 import org.springframework.data.domain.Pageable;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -23,4 +25,10 @@ public interface AdminService {
 
     // 批量删除管理员
     ResponseResult<Void> deleteIds(String adminIds);
+
+    // 登录
+    ResponseResult<Void> login(String adminName, String adminPassword, String captcha, HttpServletRequest request);
+
+    // 根据用户名查询管理员
+    MessageResult<Admin> selectAdminByName(String adminName);
 }

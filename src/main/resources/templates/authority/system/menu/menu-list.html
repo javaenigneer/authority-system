@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+    <head>
+        <meta charset="UTF-8">
+        <title>menu</title>
+        <link rel="stylesheet" href="../../../../static/lib/layui-v2.5.4/css/layui.css" media="all">
+        <link rel="stylesheet" href="../../../../static/css/public.css" media="all">
+        <style>
+            .layui-btn:not(.layui-btn-lg ):not(.layui-btn-sm):not(.layui-btn-xs) {
+                height: 34px;
+                line-height: 34px;
+                padding: 0 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="layuimini-container">
+            <div class="layuimini-main">
+                <div>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn" id="btn-expand">全部展开</button>
+                        <button class="layui-btn" id="btn-fold">全部折叠</button>
+                        <button type="button" id="addMenu" class="layui-btn layui-btn-warm"
+                                shiro:hasPermission="menu:add">添加菜单
+                        </button>
+                    </div>
+                    <table id="munu-table" class="layui-table" lay-filter="munu-table"></table>
+                </div>
+            </div>
+        </div>
+        <!-- 操作列 -->
+        <script type="text/html" id="auth-state">
+                        <span shiro:lacksPermission="menu:add,menu:edit,menu:delete">
+                            <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+                        </span>
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add" shiro:hasPermission="menu:add">添加</a>
+            <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit" shiro:hasPermission="menu:edit">修改</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del" shiro:hasPermission="menu:delete">删除</a>
+        </script>
+
+        <script src="../../../../static/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+        <script src="../../../../static/js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+        <script>
+            layui.use(['table', 'treetable', 'form'], function () {
+                var $ = layui.jquery;
+                var table = layui.table;
+                var treetable = layui.treetable;
+                var form = layui.form;
+
+                // 渲染表格
+                layer.load(2);
+                var tableIns = treetable.render({
+                    treeColIndex: 1,
+                    treeSpid: -1,
+                    treeIdName: 'authorityId',
+                    treePidName: 'parentId',
+                    elem: '#munu-table',
+                    url: '/menu/list',
+                    page: false,
+                    cols: [
+                        [
+                            {type: 'numbers'},
+                            {field: 'authorityName', minWidth: 200, title: '菜单名称'},
+                            {field: 'authority', title: '权限标识'},
+                            {field: 'menuUrl', title: '菜单url'},
+                            {
+                                field: 'isMenu', width: 80, align: 'center', templet: function (d) {
+                                    if (d.isMenu == 1) {
+                                        return '<span class="layui-badge layui-bg-gray">按钮</span>';
+                                    }
+                                    // if (d.parentId == -1) {
+                                    //     return '<span class="layui-badge layui-bg-blue">目录</span>';
+                                    // }
+                                    else {
+                                        return '<span class="layui-badge-rim">菜单</span>';
+                                    }
+                                }, title: '类型'
+                            },
+                            {templet: '#auth-state', width: 300, align: 'center', title: '操作'}
+                        ]
+                    ],
+                    done: function () {
+                        layer.closeAll('loading');
+                    }
+                });
+
+                $('#btn-expand').click(function () {
+                    treetable.expandAll('#munu-table');
+                });
+
+                $('#btn-fold').click(function () {
+                    treetable.foldAll('#munu-table');
+                });
+
+                // 添加菜单
+                $('#addMenu').click(function () {
+
+                    layer.open({
+
+                        title: '添加菜单',
+
+                        type: 2,
+
+                        area: ['1000px', '500px'],
+
+                        content: '/admin/menu/add.html',
+
+                        success: function (layero) {
+
+                            if (true) {
+
+                                var body = layui.layer.getChildFrame('body');
+
+                                body.find("#id").attr("value", -2);
+
+                                body.find('#parentId').attr("value", "-1");
+                            }
+                        }
+                    })
+                });
+
+
+                //监听工具条
+                table.on('tool(munu-table)', function (obj) {
+
+                    var data = obj.data;
+
+                    var layEvent = obj.event;
+
+                    if (layEvent === 'del') {
+
+                        layer.confirm('确定删除选中的菜单？', {icon: 3, title: '提示信息'}, function (index) {
+
+                            $.post("/menu/delete", {
+
+                                authorityId: data.id,//将需要删除的authorityId作为参数传入
+
+                                isMenu: data.isMenu // 是否是不是菜单
+
+                            }, function (data) {
+
+                                if (data.code == '200') {
+
+                                    layer.msg(data.info);
+
+                                    parent.location.reload();
+
+                                    layer.close(index);
+                                }
+
+                                if (data.code == '400') {
+
+                                    layer.msg(data.info);
+
+                                    return;
+                                }
+                            })
+                        })
+                    } else if (layEvent === 'add') {
+
+                        // 打开添加界面
+                        layer.open({
+
+                            title: '添加菜单',
+
+                            type: 2,
+
+                            content: '/admin/menu/add.html',
+
+                            area: ['1000px', '500px'],
+
+                            success: function (layero) {
+
+                                if (data) {
+
+                                    var body = layui.layer.getChildFrame('body');
+
+                                    body.find("#parentId").val(data.id);
+
+                                    body.find("#id").attr("value", -2);
+                                }
+                            }
+                        });
+                    } else if (layEvent === 'edit') {
+
+                        layui.layer.open({
+
+                            title: "编辑菜单",
+
+                            type: 2,
+
+                            content: "/admin/menu/edit.html",
+
+                            area: ['1000px', '500px'],
+
+                            success: function (layero) {
+
+                                var body = layui.layer.getChildFrame('body');
+
+                                if (data) {
+
+                                    // 将标题修改为修改菜单
+                                    body.find("#title").html("修改菜单");
+
+                                    // 设置按钮为禁用状态
+                                    body.find(".type").attr("disabled", "");
+
+                                    // 若是按钮
+                                    if (data.isMenu == '1') {
+
+                                        body.find("#id").attr("value", data.id);
+
+                                        body.find("#parentId").val(data.parentId);
+
+                                        body.find("#authorityName").val(data.authorityName);
+
+                                        body.find("#authority").val(data.authority);
+
+                                        body.find("#orderNumber").val(data.orderNumber);
+
+                                        body.find("#button").attr("checked", "checked");
+
+                                        body.find("#menu").removeAttr("checked");
+
+                                        // 移除菜单URL
+                                        body.find("#menuHidden").remove();
+                                    }
+
+                                    // 若是菜单
+                                    if (data.isMenu == '0') {
+
+                                        body.find("#id").attr("value", data.id);
+
+                                        body.find("#parentId").val(data.parentId);
+
+                                        body.find("#authorityName").val(data.authorityName);
+
+                                        body.find("#menuUrl").val(data.menuUrl);
+
+                                        body.find("#authority").val(data.authority);
+
+                                        body.find("#orderNumber").val(data.orderNumber);
+                                    }
+
+                                    form.render();
+                                }
+                                setTimeout(function () {
+                                    layui.layer.tips('点击此处返回菜单列表', '.layui-layer-setwin .layui-layer-close', {
+                                        tips: 3
+                                    });
+                                }, 500)
+                            }
+                        })
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

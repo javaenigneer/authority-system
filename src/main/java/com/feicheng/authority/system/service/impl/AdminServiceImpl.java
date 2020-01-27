@@ -1,5 +1,8 @@
 package com.feicheng.authority.system.service.impl;
 
+import com.feicheng.authority.common.response.MessageResult;
+import com.feicheng.authority.system.service.LoginService;
+import com.feicheng.authority.utils.RandomValidateCode;
 import com.feicheng.authority.utils.StringUtil;
 import com.feicheng.authority.common.response.ResponseResult;
 import com.feicheng.authority.system.entity.Admin;
@@ -8,12 +11,20 @@ import com.feicheng.authority.system.service.AdminService;
 import com.feicheng.authority.utils.DateUtils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -22,6 +33,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.crypto.Data;
 
 
@@ -41,6 +53,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired(required = false)
     private AdminRepository adminRepository;
+
+    @Autowired(required = false)
+    private LoginService loginService;
 
     // 判断邮箱格式
     private String emailRegex = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
@@ -267,5 +282,120 @@ public class AdminServiceImpl implements AdminService {
             return new ResponseResult<>(500, "删除失败");
         }
 
+    }
+
+    /**
+     * 登录操作
+     * @param adminName
+     * @param adminPassword
+     * @param captcha
+     * @param request
+     * @return
+     */
+    @Override
+    public ResponseResult<Void> login(String adminName, String adminPassword, String captcha, HttpServletRequest request) {
+
+        Subject subject = SecurityUtils.getSubject();
+
+        // 判断参数
+
+        // 没有登录名
+        if (StringUtils.isBlank(adminName)){
+
+            return new ResponseResult<>(400, "请输入登录名");
+        }
+
+        // 没有密码
+        if (StringUtils.isBlank(adminPassword)){
+
+            return new ResponseResult<>(400, "请输入密码");
+        }
+
+        // 没有验证码
+        if (StringUtils.isBlank(captcha)){
+
+            return new ResponseResult<>(400, "请输入验证码");
+        }
+
+        // 判断验证码是否一致
+        if (!RandomValidateCode.verify(request, captcha)){
+
+            return new ResponseResult<>(400, "验证码错误");
+        }
+
+        // 全部数据通过
+        UsernamePasswordToken token = new UsernamePasswordToken(adminName, adminPassword);
+
+        try {
+
+            // 登录
+            this.loginService.login(token);
+
+            // 将用户信息保存到Session中
+            Session session = subject.getSession();
+
+            Admin admin = (Admin) subject.getPrincipal();
+
+            session.setAttribute("admin",admin);
+
+            return new ResponseResult<>(200, "登录成功");
+
+        }
+        // 用户名或密码错误
+        catch (IncorrectCredentialsException e){
+
+            e.printStackTrace();
+
+            return new ResponseResult<>(400, "用户名或密码错误");
+
+        }
+        // 账户未注册
+        catch (UnknownAccountException e){
+
+            e.printStackTrace();
+
+            return new ResponseResult<>(400, "账号未注册");
+        }
+        // 账户未激活
+        catch (AuthenticationException e) {
+
+            e.printStackTrace();
+
+            return new ResponseResult<>(400, "账号未激活");
+        }
+    }
+
+    /**
+     * 根据用户名查询管理员
+     * @param adminName
+     * @return
+     */
+    @Override
+    public MessageResult<Admin> selectAdminByName(String adminName) {
+
+        Specification<Admin> specification = new Specification<Admin>() {
+
+            List<Predicate> list = new ArrayList<>();
+
+
+            @Override
+            public Predicate toPredicate(Root<Admin> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+
+                list.add(criteriaBuilder.equal(root.get("adminName").as(String.class), adminName));
+
+                Predicate[] predicates = new Predicate[list.size()];
+
+                return criteriaBuilder.and(list.toArray(predicates));
+            }
+        };
+
+        List<Admin> admins = this.adminRepository.findAll(specification);
+
+        if (CollectionUtils.isEmpty(admins)){
+
+            return new MessageResult<>(400, "无数据", null);
+        }
+
+        return new MessageResult<>(200, "查询成功", admins.get(0));
     }
 }

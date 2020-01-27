@@ -35,9 +35,9 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
 
                 {field: 'roleId', title: 'ID', width: 60, align: "center"},
 
-                {field: 'roleName', title: '角色名称', width: 350},
+                {field: 'roleName', title: '角色名称', width: 180},
 
-                {field: 'remark', title: '描述', align: 'center'},
+                {field: 'remark', title: '描述', align: 'center', width :400},
 
                 {
                     field: 'createTime', title: '创建时间', align: 'center', minWidth: 110, templet: function (d) {
@@ -60,7 +60,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
                     curr: 1 //重新从第 1 页开始
                 },
                 where: {
-                    articleName: $(".searchVal").val()  //搜索的关键字
+                    roleName: $(".searchVal").val()  //搜索的关键字
                 }
             })
         } else {
@@ -77,7 +77,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
 
             type: 2,
 
-            area: ['1000px', '800px'],
+            area: ['1000px', '600px'],
 
             content: "/admin/role/edit.html",
 
@@ -121,7 +121,7 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
 
             type: 2,
 
-            area: ['1000px', '800px'],
+            area: ['1000px', '600px'],
 
 
             content: "/admin/role/add.html"
@@ -190,24 +190,25 @@ layui.use(['form', 'layer', 'laydate', 'table', 'laytpl'], function () {
 
         } else if (layEvent === 'del') { //删除
 
-            layer.confirm('确定删除此文章？', {icon: 3, title: '提示信息'}, function (index) {
+            layer.confirm('确定删除此角色？', {icon: 3, title: '提示信息'}, function (index) {
 
-                $.post("/article/delete", {
+                $.post("/role/delete", {
 
-                        articleId: data.id  //将需要删除的articleId作为参数传入
+                        roleId: data.roleId  //将需要删除的roleId作为参数传入
 
                     },
                     function (data) {
-                        if (data.info == '删除成功') {
 
-                            layer.msg("删除成功");
+                        if (data.code == '200') {
+
+                            layer.msg(data.msg);
 
                             tableIns.reload();
 
                             layer.close(index);
                         }
 
-                        if (data.info == '服务器错误') {
+                        if (data.code == '500') {
 
                             layer.msg("删除失败，请稍后再试");
 
