@@ -31,4 +31,10 @@ public interface AdminService {
 
     // 根据用户名查询管理员
     MessageResult<Admin> selectAdminByName(String adminName);
+
+    // 注册操作
+    ResponseResult<Void> register(String adminName, String adminPassword, String captcha, String adminEmail, HttpServletRequest request);
+
+    // 激活管理员
+    ResponseResult<Void> active(Long adminId);
 }

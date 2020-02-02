@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.Date;
@@ -89,6 +86,21 @@ public class AdminController {
     public ResponseEntity<ResponseResult<Void>> deleteIds(@RequestParam("adminIds") String adminIds) {
 
         ResponseResult<Void> responseResult = this.adminService.deleteIds(adminIds);
+
+        return ResponseEntity.ok(responseResult);
+    }
+
+
+    /**
+     * 激活管理员
+     *
+     * @param adminId
+     * @return
+     */
+    @GetMapping("active/{adminId}")
+    public ResponseEntity<ResponseResult<Void>> active(@PathVariable("adminId") Long adminId) {
+
+        ResponseResult<Void> responseResult = this.adminService.active(adminId);
 
         return ResponseEntity.ok(responseResult);
     }

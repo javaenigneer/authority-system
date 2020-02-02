@@ -76,9 +76,10 @@ public class ViewController {
 
     /**
      * 编辑菜单界面
+     *
      * @return
      */
-    @RequestMapping("menu/edit.html" )
+    @RequestMapping("menu/edit.html")
     public String showEditMenu() {
 
         return "authority/system/menu/menu-add";
@@ -86,9 +87,10 @@ public class ViewController {
 
     /**
      * 添加菜单界面
+     *
      * @return
      */
-    @RequestMapping("menu/add.html" )
+    @RequestMapping("menu/add.html")
     public String showAddMenu() {
 
         return "authority/system/menu/menu-add";
@@ -96,42 +98,69 @@ public class ViewController {
 
     /**
      * 角色显示界面
+     *
      * @return
      */
     @RequestMapping("role.html")
-    public String showRole(){
+    public String showRole() {
 
         return "authority/system/role/role-list";
     }
 
     /**
      * 角色修改界面
+     *
      * @return
      */
     @RequestMapping("role/edit.html")
-    public String showRoleEdit(){
+    public String showRoleEdit() {
 
         return "authority/system/role/role-edit";
     }
 
     /**
      * 添加角色界面
+     *
      * @return
      */
     @RequestMapping("role/add.html")
-    public String showRoleAdd(){
+    public String showRoleAdd() {
 
         return "authority/system/role/role-add";
     }
 
     /**
      * 登录界面
+     *
      * @return
      */
     @RequestMapping("login.html")
-    public String showLogin(){
+    public String showLogin() {
 
         return "authority/system/login/login";
+    }
+
+    /**
+     * 注册界面
+     *
+     * @return
+     */
+    @RequestMapping("register.html")
+    public String showRegister() {
+
+        return "authority/system/register/register";
+    }
+
+
+    /**
+     * 系统设置界面
+     *
+     * @return
+     */
+    @RequestMapping("setting.html")
+    public String showSetting() {
+
+        return "authority/system/setting/setting";
     }
 
 }

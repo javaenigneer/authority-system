@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long>, JpaSpecificationExecutor<Menu> {
 
+    /**
+     * 根据id删除菜单
+     * @param authorityId
+     */
     @Transactional
     @Modifying
     @Query("delete from Menu menu where menu.parentId = :authorityId")

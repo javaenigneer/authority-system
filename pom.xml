@@ -102,6 +102,23 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>com.sun.mail</groupId>-->
+<!--            <artifactId>javax.mail</artifactId>-->
+<!--            <version>1.6.2</version>-->
+<!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
+        <!-- AMQP 消息队列 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+
     </dependencies>
 
 

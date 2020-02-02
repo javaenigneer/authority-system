@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)https://www.17sucai.com/preview/23816/2018-10-16/login/html/index.html -->
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <link rel="stylesheet" href="../../../../static/css/basic.css">
+    <link rel="stylesheet" href="../../../../static/css/login.css">
+    <link rel="stylesheet" href="../../../../static/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../../static/css/public.css" media="all">
+    <link rel="stylesheet" href="../../../../static/lib/layui-v2.5.4/css/modules/layer/default/layer.css" media="all">
+    <script type="text/javascript" src="../../../../static/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../../static/js/basic.js"></script>
+    <title>FC权限管理注册</title>
+</head>
+<body>
+<div class="pagewrap">
+    <div class="website-modify">维护时间</div>
+    <div class="main" id="screen" style="height: 680px;">
+        <div class="login-page jkgl-login">
+            <div class="bottom-bg">
+                <img src="../../../../static/images/bottom_bg.png">
+            </div>
+            <div class="yun-img">
+                <div class="yun-list">
+                    <div class="yun">
+                        <i class="ico ico-yun1"></i>
+                        <i class="ico ico-yun2"></i>
+                        <i class="ico ico-yun3"></i>
+                        <i class="ico ico-yun4"></i>
+                        <i class="ico ico-yun5"></i>
+                        <!-- <i class="ico ico-yun6"></i> -->
+                    </div>
+                    <div class="yun">
+                        <!-- <i class="ico ico-yun1"></i> -->
+                        <i class="ico ico-yun2"></i>
+                        <i class="ico ico-yun3"></i>
+                        <i class="ico ico-yun4"></i>
+                        <i class="ico ico-yun5"></i>
+                        <i class="ico ico-yun6"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="login-block">
+                <div class="login-pop">
+                    <h3 class="platform-name">
+                        FC权限管理系统
+                    </h3>
+                    <div class="login-body clearfix">
+                        <div class="login-info">
+                            <div class="form-list">
+                                <div class="li">
+                                    <div class="ele-wrap">
+                                        <i class="ico ico-user"></i>
+                                        <input type="text" class="form-control user" placeholder="用户名" id="adminName">
+                                    </div>
+                                </div>
+                                <div class="li">
+                                    <div class="ele-wrap">
+                                        <i class="ico ico-password"></i>
+                                        <input type="password" class="form-control password" placeholder="密码"
+                                               id="adminPassword">
+                                    </div>
+                                </div>
+
+                                <div class="li">
+                                    <div class="ele-wrap">
+                                        <i class="ico ico-password"></i>
+                                        <input type="text" class="form-control password" placeholder="邮箱"
+                                               id="adminEmail">
+                                    </div>
+                                </div>
+                                <div class="li">
+                                    <div class="ele-wrap">
+                                        <div class="code-img">
+                                            <img src="/getCode" id="captchaPic">
+                                        </div>
+                                        <div class="proving-code">
+                                            <i class="ico ico-code"></i>
+                                            <input type="text" class="form-control
+                                                    code" placeholder="验证码" id="captcha">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="li">
+                                    <div class="ele-wrap">
+                                        <a class="btn btn-blue" href="javascript:;" id="register">注  册</a>
+                                    </div>
+                                </div>
+                                <a href="/admin/login.html" style="float: right; margin-right: 50px">已有账号？马上登陆</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function ajaxLoading() {
+        $("<div class=\"datagrid-mask\"></div>").css({
+            display: "block",
+            width: "100%",
+            height: $(window).height()
+        }).appendTo("body");
+        $("<div class=\"datagrid-mask-msg\"></div>").html("正在处理，请稍候。。。").appendTo("body").css({
+            display: "block",
+            left: ($(document.body).outerWidth(true) - 190) / 2,
+            top: ($(window).height() - 45) / 2
+        });
+    }
+
+    function ajaxLoadEnd() {
+        $(".datagrid-mask").remove();
+
+        $(".datagrid-mask-msg").remove();
+    }
+    /**
+     * 点击切换验证码
+     */
+    $(document).ready(function () {
+
+        $("#captchaPic").click(function () {
+
+            this.src = "/getCode?" + Math.random();
+
+        });
+    });
+
+    /**
+     * 注册操作
+     */
+
+    $("#register").click(function () {
+
+
+        // 获取输入框中的值
+        var adminName = $("#adminName").val();
+
+        var adminPassword = $("#adminPassword").val();
+
+        var adminEmail = $("#adminEmail").val();
+
+        var captcha = $("#captcha").val();
+
+
+        // 判断是否输入值
+        if (adminName == '') {
+
+            alert("请输入登录名");
+
+            return;
+        }
+
+        if (adminPassword == '') {
+
+
+            alert("请输入密码");
+
+            return;
+        }
+
+        if (captcha == '') {
+
+            alert("请输入验证码");
+
+            return;
+        }
+
+        if (adminEmail == ''){
+
+            alert("请输入邮箱");
+
+            return;
+        }
+        // // 验证通过
+        // $.post("/register", {
+        //
+        //         adminName: adminName,
+        //
+        //         adminPassword: adminPassword,
+        //
+        //         captcha: captcha,
+        //
+        //         adminEmail: adminEmail
+        //     },
+        //
+        //     function (data) {
+        //
+        //         if (data.code == '200') {
+        //
+        //             alert(data.msg);
+        //
+        //             setTimeout(function () {
+        //
+        //                 window.location = '/admin/login.html';
+        //
+        //             }, 2000)
+        //
+        //         }
+        //
+        //         if (data.code == '400') {
+        //
+        //             alert(data.msg);
+        //
+        //             $("#captcha").val("");
+        //
+        //             $("#captchaPic").click();
+        //
+        //             return;
+        //
+        //         }
+        //         if (data.code == '500') {
+        //
+        //             alert(data.msg);
+        //
+        //             $("#captcha").val("");
+        //
+        //             $("#captchaPic").click();
+        //
+        //             return;
+        //         }
+        //     })
+
+        $.ajax({
+
+            url: '/register',
+
+            type: 'post',
+
+            dataType: 'json',
+
+            data: {
+                'adminName': adminName,
+
+                'adminPassword': adminPassword,
+
+                'adminEmail': adminEmail,
+
+                'captcha': captcha
+            },
+
+            beforeSend : function(xhr) {
+
+                alert("正在进行注册，请稍等邮箱发送！！！");
+            },
+
+            success : function(data) {
+
+                        if (data.code == '200') {
+
+                            alert(data.msg);
+
+                            setTimeout(function () {
+
+                                window.location = '/admin/login.html';
+
+                            }, 2000)
+
+                        }
+
+                        if (data.code == '400') {
+
+                            alert(data.msg);
+
+                            $("#captcha").val("");
+
+                            $("#captchaPic").click();
+
+                            return;
+
+                        }
+                        if (data.code == '500') {
+
+                            alert(data.msg);
+
+                            $("#captcha").val("");
+
+                            $("#captchaPic").click();
+
+                            return;
+                        }
+            }
+
+        })
+    });
+
+
+</script>
+</body>
+</html>

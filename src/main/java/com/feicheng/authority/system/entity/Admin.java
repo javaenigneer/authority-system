@@ -18,7 +18,7 @@ public class Admin {
      * 管理员Id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
 
 
