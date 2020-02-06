@@ -82,9 +82,16 @@
                                         // 添加成功
                                         if (data.code == '200') {
 
-                                            layer.msg(data.msg);
+                                            setTimeout(function () {
 
-                                            return;
+
+                                                top.layer.msg("添加成功！");
+
+                                                //刷新父页面
+
+                                                parent.location.reload();
+
+                                            }, 500);
                                         }
 
                                         // 参数错误
