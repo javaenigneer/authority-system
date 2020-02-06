@@ -163,4 +163,25 @@ public class ViewController {
         return "authority/system/setting/setting";
     }
 
+
+    /**
+     * 部门信息界面
+     * @return
+     */
+    @RequestMapping("dept.html")
+    public String showDeptList(){
+
+        return "authority/system/dept/dept-list";
+    }
+
+    /**
+     * 添加部门界面
+     * @return
+     */
+    @RequestMapping("/dept/add.html")
+    public String showDeptAdd(){
+
+        return "authority/system/dept/dept-add";
+    }
+
 }

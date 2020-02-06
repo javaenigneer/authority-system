@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -98,10 +99,22 @@ public class AdminController {
      * @return
      */
     @GetMapping("active/{adminId}")
-    public ResponseEntity<ResponseResult<Void>> active(@PathVariable("adminId") Long adminId) {
+    public String active(@PathVariable("adminId") Long adminId, Model model) {
 
         ResponseResult<Void> responseResult = this.adminService.active(adminId);
 
-        return ResponseEntity.ok(responseResult);
+        // 激活成功
+        if (responseResult.getCode() == 200) {
+
+            model.addAttribute("msg", responseResult.getMsg());
+
+            return "authority/system/success/result";
+        }
+
+        // 激活失败
+        model.addAttribute("msg", responseResult.getMsg());
+
+        return "authority/system/error/result";
+
     }
 }

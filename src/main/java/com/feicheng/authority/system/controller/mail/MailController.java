@@ -1,4 +1,4 @@
-package com.feicheng.authority.system.controller;
+package com.feicheng.authority.system.controller.mail;
 
 import com.feicheng.authority.common.response.ResponseResult;
 import com.feicheng.authority.system.service.MailService;

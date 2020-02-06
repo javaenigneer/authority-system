@@ -15,7 +15,7 @@ import java.util.Map;
  * @author FC
  */
 @Data
-public class MenuTree<T> implements Serializable {
+public class DeptTree<T> implements Serializable {
 
     private static final long serialVersionUID = 7681873362531265829L;
 
@@ -33,7 +33,7 @@ public class MenuTree<T> implements Serializable {
 
     private Map<String, Object> attributes;
 
-    private List<MenuTree<T>> children = new ArrayList<>();
+    private List<DeptTree<T>> children = new ArrayList<>();
 
     private String parentId;
 
@@ -41,7 +41,6 @@ public class MenuTree<T> implements Serializable {
 
     private boolean hasChild = false;
 
-    private Menu data;
+    private Dept data;
 
-    private Dept dept;
 }

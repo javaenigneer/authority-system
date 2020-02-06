@@ -2814,7 +2814,7 @@ function style_html(html_source, indent_size, indent_character, max_char) {
         this.token_text = this.last_token = this.last_text = this.token_type = '';
         this.Utils = {
             whitespace: "\n\r\t ".split(''),
-            single_token: 'br,input,link,meta,!doctype,basefont,base,area,hr,wbr,param,img,isindex,?xml,embed'.split(','),
+            single_token: 'br,input,link,meta,!doctype,basefont,dept,area,hr,wbr,param,img,isindex,?xml,embed'.split(','),
             extra_liners: 'head,body,/html'.split(','),
             in_array: function (what, arr) {
                 for (var i = 0; i < arr.length; i++) {

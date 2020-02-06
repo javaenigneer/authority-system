@@ -4,6 +4,7 @@ package com.feicheng.authority.utils;
 
 
 
+import com.feicheng.authority.common.response.DeptTree;
 import com.feicheng.authority.common.response.MenuTree;
 
 import java.util.ArrayList;
@@ -43,6 +44,40 @@ public class TreeUtil {
         });
 
         MenuTree<T> root = new MenuTree<>();
+        root.setId("0");
+        root.setParentId("");
+        root.setHasParent(false);
+        root.setHasChild(true);
+        root.setChecked(true);
+        root.setChildren(topNodes);
+        Map<String, Object> state = new HashMap<>(16);
+        root.setState(state);
+        return root;
+    }
+
+    public static <T> DeptTree<T> buildDeptTree(List<DeptTree<T>> nodes) {
+        if (nodes == null) {
+            return null;
+        }
+        List<DeptTree<T>> topNodes = new ArrayList<>();
+        nodes.forEach(children -> {
+            String pid = children.getParentId();
+            if (pid == null || "0".equals(pid)) {
+                topNodes.add(children);
+                return;
+            }
+            for (DeptTree<T> parent : nodes) {
+                String id = parent.getId();
+                if (id != null && id.equals(pid)) {
+                    parent.getChildren().add(children);
+                    children.setHasParent(true);
+                    parent.setHasChild(true);
+                    return;
+                }
+            }
+        });
+
+        DeptTree<T> root = new DeptTree<>();
         root.setId("0");
         root.setParentId("");
         root.setHasParent(false);

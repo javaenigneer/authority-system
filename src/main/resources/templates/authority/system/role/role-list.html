@@ -23,18 +23,18 @@
 				<a class="layui-btn search_btn" data-type="reload">搜索</a>
 			</div>
 			<div class="layui-inline">
-				<a class="layui-btn layui-btn-normal addRole_btn" >添加角色</a>
+				<a class="layui-btn layui-btn-normal addRole_btn" shiro:hasPermission="role:add">添加角色</a>
 			</div>
 		</form>
 	</blockquote>
 	<table id="rolesList" lay-filter="rolesList"></table>
 
 	<script type="text/html" id="newsListBar">
-<!--		<span shiro:lacksPermission="role:edit,role:delete">-->
-<!--                <span class="layui-badge-dot febs-bg-orange"></span> 无权限-->
-<!--            </span>-->
-		<a class="layui-btn layui-btn-xs" lay-event="edit" >修改</a>
-		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" >删除</a>
+		<span shiro:lacksPermission="role:edit,role:delete">
+                <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+            </span>
+		<a class="layui-btn layui-btn-xs" lay-event="edit" shiro:hasPermission="role:edit">修改</a>
+		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del" shiro:hasPermission="role:delete" >删除</a>
 	</script>
 </form>
 <script src="../../../../static/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>

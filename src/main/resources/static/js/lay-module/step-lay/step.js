@@ -95,7 +95,7 @@
         }
     };
 
-    layui.link(layui.cache.base + 'step-lay/step.css');
+    layui.link(com.feicheng.authority.system.controller.dept + 'step-lay/step.css');
 
     exports('step', step);
 });

@@ -18,7 +18,7 @@
       "icon": "fa fa-address-book",
       "child": [
         {
-          "title": "系统管理",
+          "title": "系统信息",
           "href": "",
           "icon": "fa fa-gears",
           "target": "_self",
@@ -51,7 +51,7 @@
           "child": [
             {
               "title": "部门管理",
-              "href": "/admin/picture.html",
+              "href": "/admin/dept.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             },
@@ -64,7 +64,7 @@
           ]
         },
         {
-          "title": "用户管理",
+          "title": "用户信息",
           "href": "",
           "icon": "fa fa-calendar",
           "target": "_self",

@@ -81,11 +81,11 @@
         </script>
 
         <script type="text/html" id="currentTableBar">
-<!--            <span shiro:lacksPermission="admin:edit,admin:delete">-->
-<!--                <span class="layui-badge-dot febs-bg-orange"></span> 无权限-->
-<!--            </span>-->
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <span shiro:lacksPermission="admin:edit,admin:delete">
+                <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+            </span>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit" shiro:hasPermission="admin:edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete" shiro:hasPermission="admin:delete">删除</a>
         </script>
     </div>
 </div>
