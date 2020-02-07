@@ -1,12 +1,11 @@
 package com.feicheng.authority.system.service.impl;
 
+
 import com.feicheng.authority.common.response.MessageResult;
 import com.feicheng.authority.common.response.ResponseResult;
-import com.feicheng.authority.system.entity.Admin;
-import com.feicheng.authority.system.entity.AdminRole;
-import com.feicheng.authority.system.entity.Role;
-import com.feicheng.authority.system.entity.RoleMenu;
+import com.feicheng.authority.system.entity.*;
 import com.feicheng.authority.system.repository.AdminRoleRepository;
+import com.feicheng.authority.system.repository.MenuRepository;
 import com.feicheng.authority.system.repository.RoleMenuRepository;
 import com.feicheng.authority.system.repository.RoleRepository;
 import com.feicheng.authority.system.service.AdminService;
@@ -47,6 +46,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired(required = false)
     private AdminRoleRepository adminRoleRepository;
+
+    @Autowired(required = false)
+    private MenuRepository menuRepository;
 
     @Autowired(required = false)
     private AdminService adminService;
@@ -149,6 +151,52 @@ public class RoleServiceImpl implements RoleService {
                 return new ResponseResult<>(200, "修改成功");
             }
 
+
+            // 根据菜单Id查询数据
+            Specification<Menu> specification = new Specification<Menu>() {
+
+
+                List<Predicate> list = new ArrayList<>();
+
+                @Override
+                public Predicate toPredicate(Root<Menu> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+
+
+                    CriteriaBuilder.In<Long> in = criteriaBuilder.in(root.get("authorityId"));
+
+                    for (Long menuId : menuIds
+                    ) {
+
+                        in.value(menuId);
+
+                    }
+                    list.add(in);
+
+                    Predicate[] predicates = new Predicate[list.size()];
+
+                    return criteriaBuilder.and(list.toArray(predicates));
+
+                }
+            };
+
+            // 执行查询
+            List<Menu> menus = this.menuRepository.findAll(specification);
+
+            // 判断是否为空
+            if (CollectionUtils.isEmpty(menus)) {
+
+                return new ResponseResult<>(400, "没有改权限");
+            }
+
+            // 循环判断是否是菜单
+            for (Menu menu : menus) {
+
+                if (StringUtils.equals(menu.getIsMenu(), "0")){
+
+                    // 剔除该数据
+                    menuIds.remove(menu.getAuthorityId());
+                }
+            }
             // 若修改的权限不为空
             // 先查询该角色是否有菜单权限
             List<Long> roleMenuIds = this.roleMenuRepository.select(role.getRoleId());
@@ -323,7 +371,7 @@ public class RoleServiceImpl implements RoleService {
 
         roles = listAdminRoles(messageResult.getData());
 
-        if (CollectionUtils.isEmpty(roles)){
+        if (CollectionUtils.isEmpty(roles)) {
 
             return roles;
         }
