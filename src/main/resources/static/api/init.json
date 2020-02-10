@@ -18,7 +18,7 @@
       "icon": "fa fa-address-book",
       "child": [
         {
-          "title": "系统信息",
+          "title": "系统管理",
           "href": "",
           "icon": "fa fa-gears",
           "target": "_self",
@@ -40,15 +40,7 @@
               "href": "/admin/role.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
-            }
-          ]
-        },
-        {
-          "title": "部门信息",
-          "href": "",
-          "icon": "fa fa-calendar",
-          "target": "_self",
-          "child": [
+            },
             {
               "title": "部门管理",
               "href": "/admin/dept.html",
@@ -56,21 +48,21 @@
               "target": "_self"
             },
             {
-              "title": "个人信息管理",
-              "href": "/admin/myself.html",
+              "title": "用户管理",
+              "href": "/admin/list.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             }
           ]
         },
         {
-          "title": "用户信息",
+          "title": "系统监控",
           "href": "",
           "icon": "fa fa-calendar",
           "target": "_self",
           "child": [
             {
-              "title": "网站用户",
+              "title": "在线用户",
               "href": "/admin/user/list.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
@@ -90,14 +82,14 @@
           ]
         },
         {
-          "title": "留言管理",
+          "title": "任务调度",
           "href": "",
           "icon": "fa fa-calendar",
           "target": "_self",
           "child": [
             {
-              "title": "留言列表",
-              "href": "/admin/contact.html",
+              "title": "定时任务",
+              "href": "/admin/job.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             }

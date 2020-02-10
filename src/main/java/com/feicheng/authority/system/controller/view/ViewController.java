@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  * @author Lenovo
  */
-@Controller
+@Controller("systemController")
 @RequestMapping("admin")
 public class ViewController {
 

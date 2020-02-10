@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="utf-8">
+    <title>管理员列表</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../../static/lib/layui-v2.5.4/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../../static/css/public.css" media="all">
+
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="layui-elem-field layuimini-search">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+
+                    <div class="layui-form-item">
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">开始日</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="date" id="start" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">截止日</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="date" id="end" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">Bean名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="beanName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">方法名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="methodName" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <label class="layui-form-label">状态</label>
+                            <div class="layui-input-inline">
+                                <select name="status" class="jobStatus" lay-search="">
+                                    <option value="">直接选择或搜索选择</option>
+                                    <option value="1">正常</option>
+                                    <option value="0">暂停</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <a class="layui-btn" lay-submit="" lay-filter="data-search-btn">搜索</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <!-- 新增任务 -->
+        <div class="layui-btn-group">
+            <button class="layui-btn layui-btn-normal data-add-btn" id="add_task">新增任务</button>
+        </div>
+
+        <!-- 删除任务 -->
+        <div class="layui-btn-group">
+            <button class="layui-btn layui-btn-danger data-delete-btn" id="delete_task">删除任务</button>
+        </div>
+
+
+        <!-- 执行任务 -->
+        <div class="layui-btn-group">
+            <button class="layui-btn layui-btn-warm data-start-btn" id="start_task">执行任务</button>
+        </div>
+
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="switchTpl">
+            <!-- 这里的 checked 的状态只是演示 -->
+            <input type="checkbox" name="status" value="{{d.jobId}}" lay-skin="switch" lay-text="恢复|暂停" lay-filter="jobStatus" {{ d.status == 1 ? 'checked' : '' }}>
+        </script>
+        <!-- 审核状态 -->
+
+<!--        <script type="text/html" id="adminStatus">-->
+<!--            {{#  if(d.status == "1"){ }}-->
+<!--            <span class="layui-red">正常</span>-->
+<!--            {{#  } else if(d.status == "0"){ }}-->
+<!--            <span class="layui-blue">暂停</span>-->
+<!--            {{#  } else { }}-->
+<!--            审核不通过-->
+<!--            {{#  }}}-->
+<!--        </script>-->
+
+        <script type="text/html" id="currentTableBar">
+            <span shiro:lacksPermission="admin:edit,admin:delete">
+                <span class="layui-badge-dot febs-bg-orange"></span> 无权限
+            </span>
+            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit" shiro:hasPermission="admin:edit">编辑</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete" shiro:hasPermission="admin:delete">删除</a>
+        </script>
+    </div>
+</div>
+<script src="../../../static/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../../../static/myJs/job/job-list.js"></script>
+
+<script src="../../../static/js/jquery.min.js"></script>
+</body>
+</html>
