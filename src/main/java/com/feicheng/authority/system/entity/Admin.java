@@ -3,6 +3,7 @@ package com.feicheng.authority.system.entity;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
 @Table(name = "t_admin")
 @Data
 @Entity
-public class Admin {
+public class Admin implements Serializable {
 
     /**
      * 管理员Id

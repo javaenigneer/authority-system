@@ -1,11 +1,11 @@
-package com.feicheng.authority.job.service.impl;
+package com.feicheng.authority.monitor.service.impl;
 
 import com.feicheng.authority.common.response.ResponseResult;
 import com.feicheng.authority.job.entity.JobLog;
-import com.feicheng.authority.job.repository.JobLogRepository;
-import com.feicheng.authority.job.service.JobLogService;
-import com.feicheng.authority.utils.DateUtils;
-import com.feicheng.authority.utils.StringUtil;
+import com.feicheng.authority.monitor.entity.LoginLog;
+import com.feicheng.authority.monitor.repository.LoginLogRepository;
+import com.feicheng.authority.monitor.service.LoginLogService;
+import com.feicheng.authority.utils.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,33 +20,48 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * JobLogService
+ * 登录日志Service
  *
  * @author Lenovo
  */
 @Service
-public class JobLogServiceImpl implements JobLogService {
+public class LoginLogServiceImpl implements LoginLogService {
 
 
     @Autowired(required = false)
-    private JobLogRepository jobLogRepository;
+    private LoginLogRepository loginLogRepository;
+
 
     /**
-     * 保存任务调度日志
+     * 添加登录日志
      *
-     * @param jobLog
+     * @param loginLog
      */
     @Override
-    public void save(JobLog jobLog) {
+    public void add(LoginLog loginLog) {
+
+        // 设置基本参数
+        loginLog.setLoginTime(new Date());
+
+        HttpServletRequest request = HttpContextUtil.getHttpServletRequest();
+
+        // 获取登录的IP
+        String ipAddr = IPUtil.getIpAddr(request);
+
+        loginLog.setIp(ipAddr);
+
+        loginLog.setLocation(AddressUtil.getCityInfo(ipAddr));
 
         try {
 
-            this.jobLogRepository.saveAndFlush(jobLog);
+            this.loginLogRepository.saveAndFlush(loginLog);
+
 
         } catch (Exception e) {
 
@@ -55,40 +70,33 @@ public class JobLogServiceImpl implements JobLogService {
     }
 
     /**
-     * 分页查询全部的日志信息
+     * 分页查询全部的登录日志
      *
      * @param page
      * @param limit
      * @param start
      * @param end
-     * @param beanName
-     * @param status
+     * @param userName
      * @return
      */
     @Override
-    public ResponseResult<JobLog> list(Integer page, Integer limit, String start, String end, String beanName, Integer status) {
+    public ResponseResult<LoginLog> list(Integer page, Integer limit, String start, String end, String userName) {
 
-        Pageable pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "jobId");
+        Pageable pageable = PageRequest.of(page - 1, limit, Sort.Direction.DESC, "id");
 
-        Specification<JobLog> specification = new Specification<JobLog>() {
+        Specification<LoginLog> specification = new Specification<LoginLog>() {
 
             List<Predicate> list = new ArrayList<>();
 
             @Override
-            public Predicate toPredicate(Root<JobLog> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+            public Predicate toPredicate(Root<LoginLog> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 
                 // 判断查询条件
 
-                // beanName
-                if (StringUtils.isNotBlank(beanName)) {
+                // userName
+                if (StringUtils.isNotBlank(userName)) {
 
-                    list.add(criteriaBuilder.like(root.get("beanName").as(String.class), "%" + beanName + "%"));
-                }
-
-                // status
-                if (status != null) {
-
-                    list.add(criteriaBuilder.equal(root.get("status").as(Integer.class), status));
+                    list.add(criteriaBuilder.like(root.get("userName").as(String.class), "%" + userName + "%"));
                 }
 
                 // start
@@ -96,7 +104,7 @@ public class JobLogServiceImpl implements JobLogService {
 
                     Date startDate = DateUtils.parseString(start, "yyyy-MM-dd");
 
-                    list.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createTime").as(Date.class), startDate));
+                    list.add(criteriaBuilder.greaterThanOrEqualTo(root.get("loginTime").as(Date.class), startDate));
                 }
 
                 // end
@@ -104,7 +112,7 @@ public class JobLogServiceImpl implements JobLogService {
 
                     Date endDate = DateUtils.parseString(end, "yyyy-MM-dd");
 
-                    list.add(criteriaBuilder.lessThanOrEqualTo(root.get("createTime").as(Date.class), endDate));
+                    list.add(criteriaBuilder.lessThanOrEqualTo(root.get("loginTime").as(Date.class), endDate));
                 }
 
                 Predicate[] predicates = new Predicate[list.size()];
@@ -114,39 +122,39 @@ public class JobLogServiceImpl implements JobLogService {
         };
 
         // 执行查询
-        Page<JobLog> jobLogPage = this.jobLogRepository.findAll(specification, pageable);
+        Page<LoginLog> loginLogPage = this.loginLogRepository.findAll(specification, pageable);
 
         // 判断是否有数据
-        if (CollectionUtils.isEmpty(jobLogPage.getContent())) {
+        if (CollectionUtils.isEmpty(loginLogPage.getContent())) {
 
             return new ResponseResult<>(0, "查询成功", null, 0L);
         }
 
         // 有数据
-        return new ResponseResult<>(0, "查询成功", jobLogPage.getContent(), jobLogPage.getTotalElements());
+        return new ResponseResult<>(0, "查询成功", loginLogPage.getContent(), loginLogPage.getTotalElements());
     }
 
+
     /**
-     * 删除任务调度日志
+     * 删除登录日志
      *
-     * @param jobLogId
+     * @param id
      * @return
      */
     @Override
-    public ResponseResult<Void> delete(Long jobLogId) {
+    public ResponseResult<Void> delete(Long id) {
 
-        // 判断参数
-        if (jobLogId == null) {
+        // 判断参数是否合格
+        if (id == null) {
 
             return new ResponseResult<>(400, "参数错误");
         }
 
         try {
             // 执行删除
-            this.jobLogRepository.deleteById(jobLogId);
+            this.loginLogRepository.deleteById(id);
 
             return new ResponseResult<>(200, "删除成功");
-
         } catch (Exception e) {
 
             e.printStackTrace();
@@ -156,27 +164,27 @@ public class JobLogServiceImpl implements JobLogService {
     }
 
     /**
-     * 批量删除任务调度日志
+     * 批量删除登录日志
      *
-     * @param jobLogIds
+     * @param ids
      * @return
      */
     @Override
-    public ResponseResult<Void> deleteIds(String jobLogIds) {
+    public ResponseResult<Void> deleteIds(String ids) {
 
         // 判断参数是否合格
-        if (StringUtils.isBlank(jobLogIds)) {
+        if (StringUtils.isBlank(ids)) {
 
             return new ResponseResult<>(400, "参数错误");
         }
 
-        // 将String装成List<Long>
         try {
-
-            List<Long> ids = StringUtil.stingConvertLong(jobLogIds);
+            // 执行删除
+            // 转换类型
+            List<Long> loginLogIds = StringUtil.stingConvertLong(ids);
 
             // 执行删除
-            this.jobLogRepository.deleteIds(ids);
+            this.loginLogRepository.deleteIds(loginLogIds);
 
             return new ResponseResult<>(200, "删除成功");
 

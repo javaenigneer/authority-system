@@ -131,7 +131,7 @@ public class JobServiceImpl implements JobService {
         }
 
         // 有数据
-        return new ResponseResult<>(0, "查询成功", jobPage.getContent(), (long) jobPage.getSize());
+        return new ResponseResult<>(0, "查询成功", jobPage.getContent(), (long) jobPage.getTotalElements());
     }
 
     /**
@@ -361,6 +361,8 @@ public class JobServiceImpl implements JobService {
 
             // 实现添加
             this.jobRepository.saveAndFlush(job);
+
+            ScheduleUtils.createScheduleJob(scheduler, job);
 
             return new ResponseResult<>(200, "添加成功");
 

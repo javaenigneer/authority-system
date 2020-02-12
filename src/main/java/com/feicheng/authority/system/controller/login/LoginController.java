@@ -4,6 +4,8 @@ import com.feicheng.authority.common.response.ResponseResult;
 import com.feicheng.authority.system.service.AdminService;
 import com.feicheng.authority.utils.EmailUtil;
 import com.feicheng.authority.utils.RandomValidateCode;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -74,6 +76,32 @@ public class LoginController {
         ResponseResult<Void> responseResult = this.adminService.register(adminName, adminPassword, captcha, adminEmail, request);
 
         return ResponseEntity.ok(responseResult);
+    }
+
+    /**
+     * 退出登录
+     *
+     * @return
+     */
+    @PostMapping("logOut")
+    public ResponseEntity<ResponseResult<Void>> logOut() {
+
+        try {
+
+            Subject subject = SecurityUtils.getSubject();
+
+            subject.logout();
+
+            return ResponseEntity.ok(new ResponseResult<>(200, "登出成功"));
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+            return ResponseEntity.ok(new ResponseResult<>(500, "登出失败"));
+        }
+
+
     }
 
     /**

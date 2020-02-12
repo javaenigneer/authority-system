@@ -68,15 +68,15 @@
               "target": "_self"
             },
             {
-              "title": "系统用户",
+              "title": "系统日志",
               "href": "/admin/list.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
             },
             {
-              "title": "重置用户密码",
-              "href": "page/form-step.html",
-              "icon": "",
+              "title": "登录日志",
+              "href": "/admin/loginLog.html",
+              "icon": "fa fa-list-alt",
               "target": "_self"
             }
           ]
@@ -92,31 +92,11 @@
               "href": "/admin/job.html",
               "icon": "fa fa-list-alt",
               "target": "_self"
-            }
-          ]
-        },
-        {
-          "title": "内容管理",
-          "href": "",
-          "icon": "fa fa-calendar",
-          "target": "_self",
-          "child": [
-            {
-              "title": "文章管理",
-              "href": "/admin/article/list.html",
-              "icon": "",
-              "target": "_self"
             },
             {
-              "title": "评论列表",
-              "href": "/admin/comment/list.html",
-              "icon": "",
-              "target": "_self"
-            },
-            {
-              "title": "分类管理",
-              "href": "/admin/articleType/list.html",
-              "icon": "",
+              "title": "调度日志",
+              "href": "/admin/jobLog.html",
+              "icon": "fa fa-list-alt",
               "target": "_self"
             }
           ]

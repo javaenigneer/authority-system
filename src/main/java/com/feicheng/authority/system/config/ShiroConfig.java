@@ -5,18 +5,21 @@ import com.feicheng.authority.system.filter.URLPathMatchingFilter;
 import com.feicheng.authority.system.properties.FeiChengProperties;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.session.SessionListener;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.Filter;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Shiro 配置类
@@ -28,48 +31,48 @@ public class ShiroConfig {
 
     @Autowired
     private FeiChengProperties feiChengProperties;
-//
-//    @Value("${spring.redis.host}")
-//    private String host;
-//    @Value("${spring.redis.port}")
-//    private int port;
-//    @Value("${spring.redis.password:}")
-//    private String password;
-//    @Value("${spring.redis.timeout}")
-//    private int timeout;
-//    @Value("${spring.redis.database:0}")
-//    private int database;
-//
-//    /**
-//     * shiro 中配置 redis 缓存
-//     *
-//     * @return RedisManager
-//     */
-//    private RedisManager redisManager() {
-//
-//        RedisManager redisManager = new RedisManager();
-//
-//        redisManager.setHost(host + ":" + port);
-//
-//        if (StringUtils.isNotBlank(password))
-//
-//            redisManager.setPassword(password);
-//
-//        redisManager.setTimeout(timeout);
-//
-//        redisManager.setDatabase(database);
-//
-//        return redisManager;
-//    }
 
-//    private RedisCacheManager cacheManager() {
-//
-//        RedisCacheManager redisCacheManager = new RedisCacheManager();
-//
-//        redisCacheManager.setRedisManager(redisManager());
-//
-//        return redisCacheManager;
-//    }
+    @Value("${spring.redis.host}")
+    private String host;
+    @Value("${spring.redis.port}")
+    private int port;
+    @Value("${spring.redis.password:}")
+    private String password;
+    @Value("${spring.redis.timeout}")
+    private int timeout;
+    @Value("${spring.redis.database:0}")
+    private int database;
+
+    /**
+     * shiro 中配置 redis 缓存
+     *
+     * @return RedisManager
+     */
+    private RedisManager redisManager() {
+
+        RedisManager redisManager = new RedisManager();
+
+        redisManager.setHost(host + ":" + port);
+
+        if (StringUtils.isNotBlank(password))
+
+            redisManager.setPassword(password);
+
+        redisManager.setTimeout(timeout);
+
+        redisManager.setDatabase(database);
+
+        return redisManager;
+    }
+
+    private RedisCacheManager cacheManager() {
+
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+
+        redisCacheManager.setRedisManager(redisManager());
+
+        return redisCacheManager;
+    }
 
 //    @Bean
 //    public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
@@ -113,61 +116,6 @@ public class ShiroConfig {
 
         filterChainDefinitionMap.put("/webjars/**", "anon");
 
-//        filterChainDefinitionMap.put("/swagger-resources/configuration/ui/**", "anon");
-//
-//        filterChainDefinitionMap.put("/swagger-resources/configuration/security/**", "anon");
-
-//        filterChainDefinitionMap.put("/admin/login.html", "anon");
-//
-//        filterChainDefinitionMap.put("/admin/register.html", "anon");
-//
-//        filterChainDefinitionMap.put("/admin/activate/**", "anon");
-//
-//        filterChainDefinitionMap.put("/login", "anon");
-//
-//        filterChainDefinitionMap.put("/register", "anon");
-//
-//        filterChainDefinitionMap.put("/logout", "anon");
-//
-//        filterChainDefinitionMap.put("/getCode", "anon");
-//
-//        filterChainDefinitionMap.put("/index.html", "anon");
-//
-//        filterChainDefinitionMap.put("/about.html", "anon");
-//
-//        filterChainDefinitionMap.put("/list.html", "anon");
-//
-//        filterChainDefinitionMap.put("/gbook.html", "anon");
-//
-//        filterChainDefinitionMap.put("/editor.html", "anon");
-//
-//        filterChainDefinitionMap.put("/article/detail/**", "anon");
-//
-//        filterChainDefinitionMap.put("/article/type/**", "anon");
-//
-//        filterChainDefinitionMap.put("/comment/add", "anon");
-//
-//        filterChainDefinitionMap.put("/contact/list", "anon");
-//
-//        filterChainDefinitionMap.put("/contact/add", "anon");
-//
-//        filterChainDefinitionMap.put("/swagger-ui.html#/", "anon");
-//
-//        filterChainDefinitionMap.put("/api/**", "anon");
-//
-//        filterChainDefinitionMap.put("/css/**", "anon");
-//
-//        filterChainDefinitionMap.put("/js/**", "anon");
-//
-//        filterChainDefinitionMap.put("/images/**", "anon");
-//
-//        filterChainDefinitionMap.put("/lib/**", "anon");
-//
-//        filterChainDefinitionMap.put("/myJs/**", "anon");
-//
-//        filterChainDefinitionMap.put("/Content/**", "anon");
-
-
         // 配置退出过滤器，其中具体的退出代码 Shiro已经替我们实现了
 //        filterChainDefinitionMap.put(feiChengProperties.getShiro().getLogoutUrl(), "logout");
 
@@ -196,7 +144,7 @@ public class ShiroConfig {
         securityManager.setRealm(shiroRealm);
 
         // 配置 shiro session管理器
-//        securityManager.setSessionManager(sessionManager());
+        securityManager.setSessionManager(sessionManager());
 
         // 配置 缓存管理类 cacheManager
 //        securityManager.setCacheManager(cacheManager());
@@ -255,8 +203,11 @@ public class ShiroConfig {
 
     @Bean
     public RedisSessionDAO redisSessionDAO() {
+
         RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-//        redisSessionDAO.setRedisManager(redisManager());
+
+        redisSessionDAO.setRedisManager(redisManager());
+
         return redisSessionDAO;
     }
 
@@ -265,16 +216,24 @@ public class ShiroConfig {
      *
      * @return DefaultWebSessionManager
      */
-//    @Bean
-//    public DefaultWebSessionManager sessionManager() {
-//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-//        Collection<SessionListener> listeners = new ArrayList<>();
-//        listeners.add(new ShiroSessionListener());
-//        // 设置 session超时时间
-//        sessionManager.setGlobalSessionTimeout(feiChengProperties.getShiro().getSessionTimeout() * 1000L);
-//        sessionManager.setSessionListeners(listeners);
-////        sessionManager.setSessionDAO(redisSessionDAO());
-//        sessionManager.setSessionIdUrlRewritingEnabled(false);
-//        return sessionManager;
-//    }
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+
+        Collection<SessionListener> listeners = new ArrayList<>();
+
+        listeners.add(new ShiroSessionListener());
+
+        // 设置 session超时时间
+        sessionManager.setGlobalSessionTimeout(feiChengProperties.getShiro().getSessionTimeout() * 1000L);
+
+        sessionManager.setSessionListeners(listeners);
+
+        sessionManager.setSessionDAO(redisSessionDAO());
+
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
+
+        return sessionManager;
+    }
 }

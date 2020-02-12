@@ -2,7 +2,7 @@
 <html xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="utf-8">
-    <title>管理员列表</title>
+    <title>任务调度日志列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -54,8 +54,8 @@
                             <div class="layui-input-inline">
                                 <select name="status" class="jobStatus" lay-search="">
                                     <option value="">直接选择或搜索选择</option>
-                                    <option value="1">正常</option>
-                                    <option value="0">暂停</option>
+                                    <option value="0">成功</option>
+                                    <option value="1">失败</option>
                                 </select>
                             </div>
                         </div>
@@ -67,52 +67,40 @@
             </div>
         </fieldset>
 
-        <!-- 新增任务 -->
-        <div class="layui-btn-group">
-            <button class="layui-btn layui-btn-normal data-add-btn" id="add_task" shiro:hasPermission="job:add">新增任务</button>
-        </div>
 
         <!-- 删除任务 -->
         <div class="layui-btn-group">
-            <button class="layui-btn layui-btn-danger data-delete-btn" id="delete_task" shiro:hasPermission="job:deleteIds">删除任务</button>
+            <button class="layui-btn layui-btn-danger data-delete-btn" id="delete_task" shiro:hasPermission="jobLog:deleteIds">批量删除</button>
         </div>
-
-
-        <!-- 执行任务 -->
-        <div class="layui-btn-group">
-            <button class="layui-btn layui-btn-warm data-start-btn" id="start_task" shiro:hasPermission="job:start">执行任务</button>
-        </div>
-
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-        <script type="text/html" id="switchTpl">
-            <!-- 这里的 checked 的状态只是演示 -->
-            <input type="checkbox" name="status" value="{{d.jobId}}" lay-skin="switch" lay-text="恢复|暂停" lay-filter="jobStatus" {{ d.status == 1 ? 'checked' : '' }}>
-        </script>
+<!--        <script type="text/html" id="switchTpl">-->
+<!--            &lt;!&ndash; 这里的 checked 的状态只是演示 &ndash;&gt;-->
+<!--            <input type="checkbox" name="status" value="{{d.jobId}}" lay-skin="switch" lay-text="恢复|暂停" lay-filter="jobStatus" {{ d.status == 1 ? 'checked' : '' }}>-->
+<!--        </script>-->
         <!-- 审核状态 -->
 
-<!--        <script type="text/html" id="adminStatus">-->
-<!--            {{#  if(d.status == "1"){ }}-->
-<!--            <span class="layui-red">正常</span>-->
-<!--            {{#  } else if(d.status == "0"){ }}-->
-<!--            <span class="layui-blue">暂停</span>-->
-<!--            {{#  } else { }}-->
-<!--            审核不通过-->
-<!--            {{#  }}}-->
-<!--        </script>-->
+        <script type="text/html" id="jobStatus">
+            {{#  if(d.status == "1"){ }}
+            <span class="layui-red" style="color: red">失败</span>
+            {{#  } else if(d.status == "0"){ }}
+            <span class="layui-blue" style="color: #5FB878">成功</span>
+            {{#  } else { }}
+            未知错误
+            {{#  }}}
+        </script>
 
         <script type="text/html" id="currentTableBar">
-            <span shiro:lacksPermission="job:edit,job:delete">
+            <span shiro:lacksPermission="jobLog:delete">
                 <span class="layui-badge-dot febs-bg-orange"></span> 无权限
             </span>
-            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit" shiro:hasPermission="job:edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete" shiro:hasPermission="job:delete">删除</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete" shiro:hasPermission="jobLog:delete">删除</a>
         </script>
     </div>
 </div>
 <script src="../../../static/lib/layui-v2.5.4/layui.js" charset="utf-8"></script>
-<script type="text/javascript" src="../../../static/myJs/job/job-list.js"></script>
+<script type="text/javascript" src="../../../static/myJs/jobLog/jobLog-list.js"></script>
 
 <script src="../../../static/js/jquery.min.js"></script>
 </body>

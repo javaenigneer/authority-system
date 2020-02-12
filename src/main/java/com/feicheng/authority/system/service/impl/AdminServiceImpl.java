@@ -2,6 +2,8 @@ package com.feicheng.authority.system.service.impl;
 
 
 import com.feicheng.authority.common.response.MessageResult;
+import com.feicheng.authority.monitor.entity.LoginLog;
+import com.feicheng.authority.monitor.service.LoginLogService;
 import com.feicheng.authority.system.entity.AdminRole;
 
 import com.feicheng.authority.system.entity.Menu;
@@ -71,6 +73,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Autowired(required = false)
     private RoleMenuRepository roleMenuRepository;
+
+    @Autowired(required = false)
+    private LoginLogService loginLogService;
 
     @Autowired(required = false)
     private LoginService loginService;
@@ -353,6 +358,16 @@ public class AdminServiceImpl implements AdminService {
             // 登录
             this.loginService.login(token);
 
+
+            // 保存登录日志
+            LoginLog loginLog = new LoginLog();
+
+            loginLog.setUserName(adminName);
+
+            loginLog.setSystemBrowserInfo();
+
+            this.loginLogService.add(loginLog);
+
             // 将用户信息保存到Session中
             Session session = subject.getSession();
 
@@ -578,7 +593,7 @@ public class AdminServiceImpl implements AdminService {
 
             stringBuilder.append("</html>");
 
-            this.mailService.toEmail(messageResult.getData().getAdminEmail(),stringBuilder.toString());
+            this.mailService.toEmail(messageResult.getData().getAdminEmail(), stringBuilder.toString());
 
             return new ResponseResult<>(200, "注册成功,请到邮箱激活");
 

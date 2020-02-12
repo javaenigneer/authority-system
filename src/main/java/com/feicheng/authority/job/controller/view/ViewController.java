@@ -44,5 +44,15 @@ public class ViewController {
         return "authority/job/job-add";
     }
 
+    /**
+     * 任务调度日志界面
+     * @return
+     */
+    @RequestMapping("jobLog.html")
+    public String showJobLog(){
+
+        return "authority/jobLog/jobLog-list";
+    }
+
 
 }

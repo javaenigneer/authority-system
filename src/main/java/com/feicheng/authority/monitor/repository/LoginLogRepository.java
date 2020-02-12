@@ -1,6 +1,6 @@
-package com.feicheng.authority.job.repository;
+package com.feicheng.authority.monitor.repository;
 
-import com.feicheng.authority.job.entity.JobLog;
+import com.feicheng.authority.monitor.entity.LoginLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,14 +12,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 任务调度日志Repository
+ * 登录日志Repository
  * @author Lenovo
  */
 @Repository
-public interface JobLogRepository extends JpaRepository<JobLog, Long>, JpaSpecificationExecutor<JobLog> {
+public interface LoginLogRepository extends JpaRepository<LoginLog, Long>, JpaSpecificationExecutor<LoginLog> {
 
+    /**
+     * 批量删除
+     * @param loginLogIds
+     */
     @Transactional
     @Modifying
-    @Query("delete from JobLog jobLog where jobLog.logId in (:jobLogIds)")
-    void deleteIds(@Param("jobLogIds") List<Long> jobLogIds);
+    @Query("delete from LoginLog loginLog where id in (:loginLogIds)")
+    void deleteIds(@Param("loginLogIds") List<Long> loginLogIds);
 }
