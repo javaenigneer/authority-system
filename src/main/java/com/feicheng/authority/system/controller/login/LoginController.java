@@ -42,17 +42,13 @@ public class LoginController {
      *
      * @param adminName
      * @param adminPassword
-     * @param captcha
-     * @param request
      * @return
      */
     @PostMapping("login")
     public ResponseEntity<ResponseResult<Void>> login(@RequestParam("adminName") String adminName,
-                                                      @RequestParam("adminPassword") String adminPassword,
-                                                      @RequestParam("captcha") String captcha,
-                                                      HttpServletRequest request) {
+                                                      @RequestParam("adminPassword") String adminPassword) {
 
-        ResponseResult<Void> responseResult = this.adminService.login(adminName, adminPassword, captcha, request);
+        ResponseResult<Void> responseResult = this.adminService.login(adminName, adminPassword);
 
         return ResponseEntity.ok(responseResult);
     }
@@ -62,18 +58,15 @@ public class LoginController {
      *
      * @param adminName
      * @param adminPassword
-     * @param captcha
      * @param adminEmail
      * @return
      */
     @PostMapping("register")
     public ResponseEntity<ResponseResult<Void>> register(@RequestParam("adminName") String adminName,
                                                          @RequestParam("adminPassword") String adminPassword,
-                                                         @RequestParam("captcha") String captcha,
-                                                         @RequestParam("adminEmail") String adminEmail,
-                                                         HttpServletRequest request) {
+                                                         @RequestParam("adminEmail") String adminEmail) {
 
-        ResponseResult<Void> responseResult = this.adminService.register(adminName, adminPassword, captcha, adminEmail, request);
+        ResponseResult<Void> responseResult = this.adminService.register(adminName, adminPassword,  adminEmail);
 
         return ResponseEntity.ok(responseResult);
     }

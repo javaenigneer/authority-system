@@ -427,40 +427,40 @@ public class RoleServiceImpl implements RoleService {
     }
 
 
-    /**
-     * 将用逗号隔开的字符串转换成List对象
-     *
-     * @param roleMenu
-     * @return
-     */
-    private List<Long> changeStringToList(String roleMenu) {
+        /**
+         * 将用逗号隔开的字符串转换成List对象
+         *
+         * @param roleMenu
+         * @return
+         */
+        private List<Long> changeStringToList(String roleMenu) {
 
-        // 若没有添加权限信息
-        if (StringUtils.isBlank(roleMenu)) {
+            // 若没有添加权限信息
+            if (StringUtils.isBlank(roleMenu)) {
 
-            return null;
+                return null;
+            }
+
+            // 添加了权限信息
+
+            // 将字符串分割成数组
+            String[] split = roleMenu.split(",");
+
+            // 循环遍历将String装换成Long
+
+            List<Long> roleMenuIds = new ArrayList<Long>();
+
+            for (String menuId : split
+            ) {
+
+                roleMenuIds.add(Long.parseLong(menuId));
+            }
+
+            // 移除数据为1的数据
+            roleMenuIds.remove(0);
+
+            return roleMenuIds;
         }
-
-        // 添加了权限信息
-
-        // 将字符串分割成数组
-        String[] split = roleMenu.split(",");
-
-        // 循环遍历将String装换成Long
-
-        List<Long> roleMenuIds = new ArrayList<Long>();
-
-        for (String menuId : split
-        ) {
-
-            roleMenuIds.add(Long.parseLong(menuId));
-        }
-
-        // 移除数据为1的数据
-        roleMenuIds.remove(0);
-
-        return roleMenuIds;
-    }
 
 
 }

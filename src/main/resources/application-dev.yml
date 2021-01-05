@@ -1,0 +1,56 @@
+#启动端口
+server:
+  port: 8000
+  tomcat:
+    uri-encoding: UTF-8
+
+#应用名称
+spring:
+  application:
+    name: authority-system
+    #Thymeleaf取消缓存
+  thymeleaf:
+    cache: false
+    #jpa的配置
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+    #数据库配置
+
+  datasource:
+    dynamic:
+      primary: base
+      datasource:
+        base:
+          url: jdbc:mysql://localhost:3306/authoritysystem?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+          driver-class-name: com.mysql.jdbc.Driver
+          username: root
+          password: wrf123
+        quartz:
+          url: jdbc:mysql://localhost:3306/febs_quartz?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+          driver-class-name: com.mysql.jdbc.Driver
+          username: root
+          password: wrf123
+
+
+  redis:
+    # Redis数据库索引（默认为 0）
+    database: 0
+    # Redis服务器地址
+    host: 123.57.64.9
+    # Redis服务器连接端口
+    port: 6379
+    # Redis 密码
+    password:
+    # 超时时间
+    timeout: 0
+
+    jedis:
+      pool:
+        max-active: 2000
+
+        min-idle: 8
+
+        max-idle: 500
+
+        max-wait: 10000

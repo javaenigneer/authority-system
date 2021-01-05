@@ -315,12 +315,10 @@ public class AdminServiceImpl implements AdminService {
      *
      * @param adminName
      * @param adminPassword
-     * @param captcha
-     * @param request
      * @return
      */
     @Override
-    public ResponseResult<Void> login(String adminName, String adminPassword, String captcha, HttpServletRequest request) {
+    public ResponseResult<Void> login(String adminName, String adminPassword) {
 
         Subject subject = SecurityUtils.getSubject();
 
@@ -338,17 +336,6 @@ public class AdminServiceImpl implements AdminService {
             return new ResponseResult<>(400, "请输入密码");
         }
 
-        // 没有验证码
-        if (StringUtils.isBlank(captcha)) {
-
-            return new ResponseResult<>(400, "请输入验证码");
-        }
-
-        // 判断验证码是否一致
-        if (!RandomValidateCode.verify(request, captcha)) {
-
-            return new ResponseResult<>(400, "验证码错误");
-        }
 
         // 全部数据通过
         UsernamePasswordToken token = new UsernamePasswordToken(adminName, adminPassword);
@@ -447,7 +434,7 @@ public class AdminServiceImpl implements AdminService {
      * @return
      */
     @Override
-    public ResponseResult<Void> register(String adminName, String adminPassword, String captcha, String adminEmail, HttpServletRequest request) {
+    public ResponseResult<Void> register(String adminName, String adminPassword,  String adminEmail) {
 
         // 判断参数
 
@@ -474,18 +461,7 @@ public class AdminServiceImpl implements AdminService {
 
             return new ResponseResult<>(400, "邮箱格式错误");
         }
-        // 没有验证码
-        if (StringUtils.isBlank(captcha)) {
 
-            return new ResponseResult<>(400, "请输入验证码");
-
-        }
-
-        // 验证码错误
-        if (!RandomValidateCode.verify(request, captcha)) {
-
-            return new ResponseResult<>(400, "验证码错误");
-        }
 
         // 根据管理员名称查询管理员是否存在
         MessageResult<Admin> messageResult = this.selectAdminByName(adminName);
@@ -587,7 +563,7 @@ public class AdminServiceImpl implements AdminService {
 
             stringBuilder.append("<p>你已成功注册，请点击下列连接进行激活</p>");
 
-            stringBuilder.append("<p>激活地址: http://localhost:8000/admin/active/" + messageResult.getData().getAdminId() + "</p>");
+            stringBuilder.append("<p>激活地址: http://123.57.64.9:8000/admin/active/" + messageResult.getData().getAdminId() + "</p>");
 
             stringBuilder.append("</body>");
 

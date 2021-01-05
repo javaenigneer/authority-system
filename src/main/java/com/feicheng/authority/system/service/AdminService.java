@@ -27,13 +27,13 @@ public interface AdminService {
     ResponseResult<Void> deleteIds(String adminIds);
 
     // 登录
-    ResponseResult<Void> login(String adminName, String adminPassword, String captcha, HttpServletRequest request);
+    ResponseResult<Void> login(String adminName, String adminPassword);
 
     // 根据用户名查询管理员
     MessageResult<Admin> selectAdminByName(String adminName);
 
     // 注册操作
-    ResponseResult<Void> register(String adminName, String adminPassword, String captcha, String adminEmail, HttpServletRequest request);
+    ResponseResult<Void> register(String adminName, String adminPassword,  String adminEmail);
 
     // 激活管理员
     ResponseResult<Void> active(Long adminId);

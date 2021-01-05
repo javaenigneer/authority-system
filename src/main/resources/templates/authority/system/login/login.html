@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../../../../static/lib/layui-v2.5.4/css/modules/layer/default/layer.css" media="all">
     <script type="text/javascript" src="../../../../static/js/jquery.min.js"></script>
     <script type="text/javascript" src="../../../../static/js/basic.js"></script>
-    <title>FC权限管理注册</title>
+    <title>FC权限管理登录</title>
 </head>
 <body>
 <div class="pagewrap">
@@ -52,31 +52,22 @@
                                 <div class="li">
                                     <div class="ele-wrap">
                                         <i class="ico ico-user"></i>
-                                        <input type="text" class="form-control user" placeholder="用户名" id="adminName">
+                                        <input type="text" class="form-control user" placeholder="用户名" id="adminName" value="feifei">
                                     </div>
                                 </div>
                                 <div class="li">
                                     <div class="ele-wrap">
                                         <i class="ico ico-password"></i>
                                         <input type="password" class="form-control password" placeholder="密码"
-                                               id="adminPassword">
+                                               id="adminPassword" value="123456">
                                     </div>
                                 </div>
-
                                 <div class="li">
                                     <div class="ele-wrap">
-                                        <i class="ico ico-password"></i>
-                                        <input type="text" class="form-control password" placeholder="邮箱"
-                                               id="adminEmail">
+                                        <a class="btn btn-blue" href="javascript:;" id="login">登 录</a>
                                     </div>
                                 </div>
-
-                                <div class="li">
-                                    <div class="ele-wrap">
-                                        <a class="btn btn-blue" href="javascript:;" id="register">注  册</a>
-                                    </div>
-                                </div>
-                                <a href="/admin/login.html" style="float: right; margin-right: 50px">已有账号？马上登陆</a>
+                                <a href="/admin/register.html" style="float: right; margin-right: 50px">注册账号</a>
                             </div>
                         </div>
 
@@ -89,39 +80,19 @@
 
 <script>
 
-    function ajaxLoading() {
-        $("<div class=\"datagrid-mask\"></div>").css({
-            display: "block",
-            width: "100%",
-            height: $(window).height()
-        }).appendTo("body");
-        $("<div class=\"datagrid-mask-msg\"></div>").html("正在处理，请稍候。。。").appendTo("body").css({
-            display: "block",
-            left: ($(document.body).outerWidth(true) - 190) / 2,
-            top: ($(window).height() - 45) / 2
-        });
-    }
 
-    function ajaxLoadEnd() {
-        $(".datagrid-mask").remove();
-
-        $(".datagrid-mask-msg").remove();
-    }
 
     /**
-     * 注册操作
+     * 登录操作
      */
 
-    $("#register").click(function () {
+    $("#login").click(function () {
 
 
         // 获取输入框中的值
         var adminName = $("#adminName").val();
 
         var adminPassword = $("#adminPassword").val();
-
-        var adminEmail = $("#adminEmail").val();
-
 
         // 判断是否输入值
         if (adminName == '') {
@@ -139,75 +110,40 @@
             return;
         }
 
-        if (adminEmail == ''){
+        // 验证通过
+        $.post("/login", {
 
-            alert("请输入邮箱");
+                adminName: adminName,
 
-            return;
-        }
-
-        $.ajax({
-
-            url: '/register',
-
-            type: 'post',
-
-            dataType: 'json',
-
-            data: {
-                'adminName': adminName,
-
-                'adminPassword': adminPassword,
-
-                'adminEmail': adminEmail
+                adminPassword: adminPassword
             },
 
-            beforeSend : function(xhr) {
+            function (data) {
 
-                alert("正在进行注册，请稍等邮箱发送！！！");
-            },
+                if (data.code == '200') {
 
-            success : function(data) {
+                    alert('登录成功，正在跳转页面。。。');
 
-                        if (data.code == '200') {
+                    setTimeout(function () {
 
-                            alert(data.msg);
+                        window.location = '/admin/index.html';
 
-                            setTimeout(function () {
+                    }, 2000)
 
-                                window.location = '/admin/login.html';
+                }
 
-                            }, 2000)
+                if (data.code == '400') {
 
-                        }
+                    alert(data.msg);
 
-                        if (data.code == '400') {
+                    $("#captcha").val("");
 
-                            alert(data.msg);
+                    $("#captchaPic").click();
 
-                            $("#captcha").val("");
-
-                            $("#captchaPic").click();
-
-                            return;
-
-                        }
-                        if (data.code == '500') {
-
-                            alert(data.msg);
-
-                            $("#captcha").val("");
-
-                            $("#captchaPic").click();
-
-                            return;
-                        }
-            }
-
-        })
+                    return;
+                }
+            })
     });
-
-
 </script>
 </body>
 </html>

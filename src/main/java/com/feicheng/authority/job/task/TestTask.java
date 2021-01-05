@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class TestTask {
 
     public void test(String params) {
+
         log.info("我是带参数的test方法，正在被执行，参数为：{}" , params);
     }
     public void test1() {
